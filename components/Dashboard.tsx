@@ -1,5 +1,6 @@
 import ExoplanetPredictor from './ExoplanetPredictor';
 import FeatureImportanceChart from './FeatureImportanceChart';
+import ExoplanetTable from './ExoplanetTable';
 
 const Dashboard = () => {
     return (
@@ -12,6 +13,11 @@ const Dashboard = () => {
                     <div>
                         <FeatureImportanceChart />
                     </div>
+                </div>
+
+                {/* Exoplanet Table Section */}
+                <div className="mt-8">
+                    <ExoplanetTable />
                 </div>
             </div>
         </div>
