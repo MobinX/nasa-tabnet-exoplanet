@@ -1,0 +1,68 @@
+{
+    "orbital_period": {
+        "range": [
+            0.1638211,
+            4700.0
+        ]
+    },
+    "planet_radius": {
+        "range": [
+            0.08,
+            200346.0
+        ]
+    },
+    "equilibrium_temp": {
+        "range": [
+            92.0,
+            14667.0
+        ]
+    },
+    "insolation_flux": {
+        "range": [
+            0.0187275,
+            10947554.55
+        ]
+    },
+    "transit_depth": {
+        "range": [
+            0.8,
+            1541400.0
+        ]
+    },
+    "transit_duration": {
+        "range": [
+            0.1046,
+            138.54
+        ]
+    },
+    "stellar_teff": {
+        "range": [
+            2520.0,
+            31000.0
+        ]
+    },
+    "stellar_logg": {
+        "range": [
+            0.047,
+            5.96065
+        ]
+    },
+    "stellar_radius": {
+        "range": [
+            0.11,
+            229.908
+        ]
+    },
+    "ra": {
+        "range": [
+            0.185606,
+            359.793385
+        ]
+    },
+    "dec": {
+        "range": [
+            -88.121111,
+            87.86853
+        ]
+    }
+}
