@@ -13,7 +13,7 @@ const Dashboard = () => {
         // Simulate rocket launch animation
         const timer = setTimeout(() => {
             setShowMainContent(true);
-        }, 3000); // 3 seconds for demo, adjust as needed
+        }, 4000); // 5 seconds for demo, adjust as needed
 
         return () => clearTimeout(timer);
     }, []);
@@ -28,12 +28,15 @@ const Dashboard = () => {
 
     if (!showMainContent) {
         return (
-            <div className="fixed inset-0 w-full h-full bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900">
+            <div className="fixed inset-0 w-full h-full bg-gradient-to-br from-black via-gray-900 to-purple-900
+
+">
                 {/* Full Screen Lottie Animation */}
                 <DotLottieReact
                     src="/assets/rocket.lottie"
                     autoplay
                     loop
+                    speed={0.7}
                     className="w-full h-full"
                     style={{
                         width: '100vw',
@@ -144,11 +147,7 @@ const Dashboard = () => {
                         </h2>
                         <Icon icon="lucide:book-open" className="w-12 h-12 text-primary ml-4" />
                     </div>
-                    <p className="text-xl text-base-content/70 max-w-3xl mx-auto leading-relaxed">
-                        Comprehensive analysis of NASA's exoplanet candidates using advanced AI techniques.
-                        Explore our model's insights, feature importance analysis, and prioritized candidate rankings
-                        that help astronomers make breakthrough discoveries.
-                    </p>
+                   
                 </div>
 
                 {/* Main Application Sections */}
