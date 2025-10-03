@@ -19,6 +19,7 @@ async function splitJsonFile() {
     json.sort((a, b) => a.prob_confirmed - b.prob_confirmed);
 
     const totalRecords = json.length;
+    console.log(`Total records: ${totalRecords}`);
     const numFiles = Math.ceil(totalRecords / recordsPerFile);
 
     for (let i = 0; i < numFiles; i++) {

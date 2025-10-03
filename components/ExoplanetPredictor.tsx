@@ -132,8 +132,8 @@ const ExoplanetPredictor = () => {
   }
 
   return (
-    <div data-theme="night" className="bg-base-100 text-base-content  flex flex-col items-center  ">
-      <div className="card w-full max-w-4xl bg-base-200 shadow-xl">
+    <div data-theme="night" className="bg-base-300/50 p-4 rounded-lg text-base-content  flex flex-col items-center  ">
+      <div className="card w-full  bg-base-300/50 p-4 rounded-lg shadow-xl">
         <div className="card-body">
             <div className="card-title">
                 <h1 className="text-2xl font-bold">TabNet Exoplanet Prediction</h1>
