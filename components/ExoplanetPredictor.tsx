@@ -14,10 +14,13 @@ const ExoplanetPredictor = () => {
   const [prediction, setPrediction] = useState<string | null>(null);
   const [predictionScore, setPredictionScore] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [allProbabilities, setAllProbabilities] = useState<number[] | null>(null);
   const [featureRanges, setFeatureRanges] = useState<FeatureRanges | null>(null);
   const [inputValues, setInputValues] = useState<{ [key: string]: number }>({});
   const [isLoading, setIsLoading] = useState(false);
   const [editingFeature, setEditingFeature] = useState<string | null>(null);
+
+  const classNames = ['CONFIRMED', 'FALSE POSITIVE'];
 
   useEffect(() => {
     const loadResources = async () => {
@@ -73,6 +76,7 @@ const ExoplanetPredictor = () => {
     setIsLoading(true);
     setPrediction(null);
     setPredictionScore(null);
+    setAllProbabilities(null);
     setError(null);
 
     try {
@@ -85,13 +89,22 @@ const ExoplanetPredictor = () => {
       const results = await session.run(feeds);
       const outputTensor = results.output;
       const predictions = outputTensor.data as Float32Array;
+      console.log(predictions)
 
-      const predictedClassIndex = predictions[0] > 50 ? 1 : 0;
-      setPredictionScore(predictions[0]);
-      const classNames = ['CONFIRMED', 'FALSE POSITIVE'];
+      // Apply softmax to convert logits to probabilities
+      const expLogits = predictions.map(logit => Math.exp(logit));
+      const sumExpLogits = expLogits.reduce((a, b) => a + b, 0);
+      const softmaxProbs = expLogits.map(expLogit => expLogit / sumExpLogits);
+      console.log(softmaxProbs)
+      const maxProb = Math.max(...softmaxProbs);
+      const predictedClassIndex = softmaxProbs.indexOf(maxProb);
+      const predictionScore = maxProb * 100;
+      
       const predictedClassName = classNames[predictedClassIndex];
 
       setPrediction(predictedClassName);
+      setPredictionScore(predictionScore);
+      setAllProbabilities(Array.from(softmaxProbs));
     } catch (e: any) {
       console.error('Failed to run inference:', e);
       setError(`Error during inference: ${e.message}`);
@@ -190,7 +203,17 @@ const ExoplanetPredictor = () => {
                     <h3 className="font-bold">Prediction Result</h3>
                     <div className="text-xs">The model predicts this candidate is a <span className="font-semibold">{prediction}</span> exoplanet.</div>
                     {predictionScore !== null && (
-                      <div className="text-xs mt-1">Confidence Score: <span className="font-semibold">{prediction === 'CONFIRMED' ? (100 - predictionScore).toFixed(2) : predictionScore.toFixed(2)}%</span></div>
+                      <div className="text-xs mt-1">Confidence Score: <span className="font-semibold">{predictionScore.toFixed(2)}%</span></div>
+                    )}
+                    {allProbabilities && (
+                        <div className="mt-2">
+                            <h4 className="text-xs font-bold">All Class Probabilities:</h4>
+                            {allProbabilities.map((prob, index) => (
+                                <div key={classNames[index]} className="text-xs">
+                                    {classNames[index]}: <span className="font-semibold">{(prob * 100).toFixed(2)}%</span>
+                                </div>
+                            ))}
+                        </div>
                     )}
                   </div>
                 </div>
