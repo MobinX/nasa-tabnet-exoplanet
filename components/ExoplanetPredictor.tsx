@@ -5,6 +5,7 @@ import { Icon } from '@iconify/react';
 interface FeatureRanges {
   [key: string]: {
     range: [number, number];
+    default?: number;
   };
 }
 
@@ -30,7 +31,7 @@ const ExoplanetPredictor = () => {
 
         const initialValues: { [key: string]: number } = {};
         for (const key in ranges) {
-          initialValues[key] = ranges[key].range[0];
+          initialValues[key] = ranges[key].default ?? ranges[key].range[0];
         }
         setInputValues(initialValues);
 
@@ -85,7 +86,7 @@ const ExoplanetPredictor = () => {
       const outputTensor = results.output;
       const predictions = outputTensor.data as Float32Array;
 
-      const predictedClassIndex = predictions[0] > 50 ? 0 : 1;
+      const predictedClassIndex = predictions[0] > 50 ? 1 : 0;
       setPredictionScore(predictions[0]);
       const classNames = ['CONFIRMED', 'FALSE POSITIVE'];
       const predictedClassName = classNames[predictedClassIndex];
@@ -161,7 +162,7 @@ const ExoplanetPredictor = () => {
                   value={inputValues[feature]}
                   step={0.001}
                   onChange={(e) => handleSliderChange(feature, parseFloat(e.target.value))}
-                  className="range range-primary range-sm ml-5"
+                  className="range range-primary range-sm"
                 />
               </div>
             ))}
@@ -189,7 +190,7 @@ const ExoplanetPredictor = () => {
                     <h3 className="font-bold">Prediction Result</h3>
                     <div className="text-xs">The model predicts this candidate is a <span className="font-semibold">{prediction}</span> exoplanet.</div>
                     {predictionScore !== null && (
-                      <div className="text-xs mt-1">Confidence Score: <span className="font-semibold">{prediction == "FALSE POSITIVE" ? (100 - predictionScore) : predictionScore }%</span></div>
+                      <div className="text-xs mt-1">Confidence Score: <span className="font-semibold">{prediction === 'CONFIRMED' ? (100 - predictionScore).toFixed(2) : predictionScore.toFixed(2)}%</span></div>
                     )}
                   </div>
                 </div>

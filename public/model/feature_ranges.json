@@ -1,68 +1,79 @@
 {
-    "orbital_period": {
+    "Orbital Period (pl_orbper)": {
         "range": [
             0.1638211,
             4700.0
-        ]
+        ],
+        "default": 6.444
     },
-    "planet_radius": {
+    "Planet Radius (pl_rade)": {
         "range": [
             0.08,
             200346.0
-        ]
+        ],
+        "default": 2.460
     },
-    "equilibrium_temp": {
+    "Equilibrium Temp (pl_eqt)": {
         "range": [
             92.0,
             14667.0
-        ]
+        ],
+        "default": 712.281
     },
-    "insolation_flux": {
+    "Insolation Flux (pl_insol)": {
         "range": [
             0.0187275,
             10947554.55
-        ]
+        ],
+        "default": 60.831
     },
     "transit_depth": {
         "range": [
             0.8,
             1541400.0
-        ]
+        ],
+        "default": 1121.951
     },
     "transit_duration": {
         "range": [
             0.1046,
             138.54
-        ]
+        ],
+        "default": 1.931
     },
-    "stellar_teff": {
+    "Stellar Teff (st_teff)": {
         "range": [
             2520.0,
             31000.0
-        ]
+        ],
+        "default": 4803.000
     },
-    "stellar_logg": {
+    "Stellar Logg (st_logg)": {
         "range": [
             0.047,
             5.96065
-        ]
+        ],
+        "default": 4.521
     },
-    "stellar_radius": {
+    "Stellar Radius (st_rad)": {
         "range": [
             0.11,
             229.908
-        ]
+        ],
+        "default": 0.737
     },
     "ra": {
         "range": [
             0.185606,
             359.793385
-        ]
+        ],
+        "default": 296.004
     },
     "dec": {
         "range": [
             -88.121111,
             87.86853
-        ]
+        ],
+        "default": -47.562
     }
 }
