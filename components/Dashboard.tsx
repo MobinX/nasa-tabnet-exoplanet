@@ -1,9 +1,89 @@
+import { useState, useEffect } from 'react';
 import { Icon } from '@iconify/react';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import ExoplanetPredictor from './ExoplanetPredictor';
 import FeatureImportanceChart from './FeatureImportanceChart';
 import ExoplanetTable from './ExoplanetTable';
 
 const Dashboard = () => {
+    const [showMainContent, setShowMainContent] = useState(false);
+    const [showPredictor, setShowPredictor] = useState(false);
+
+    useEffect(() => {
+        // Simulate rocket launch animation
+        const timer = setTimeout(() => {
+            setShowMainContent(true);
+        }, 3000); // 3 seconds for demo, adjust as needed
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    const handleExperienceAI = () => {
+        setShowPredictor(true);
+    };
+
+    const handleExploreWork = () => {
+        setShowMainContent(true);
+    };
+
+    if (!showMainContent) {
+        return (
+            <div className="fixed inset-0 w-full h-full bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900">
+                {/* Full Screen Lottie Animation */}
+                <DotLottieReact
+                    src="/assets/rocket.lottie"
+                    autoplay
+                    loop
+                    className="w-full h-full"
+                    style={{
+                        width: '100vw',
+                        height: '100vh',
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        zIndex: 9999
+                    }}
+                />
+            </div>
+        );
+    }
+
+    if (showPredictor) {
+        return (
+            <div data-theme="night" className="bg-base-100 min-h-screen p-4 sm:p-6 md:p-8">
+                <div className="container mx-auto">
+                    {/* Navigation Header */}
+                    <div className="flex items-center justify-between mb-8">
+                        <div className="flex items-center">
+                            <button
+                                onClick={() => setShowPredictor(false)}
+                                className="btn btn-ghost btn-sm mr-4"
+                            >
+                                <Icon icon="lucide:arrow-left" className="w-5 h-5 mr-2" />
+                                Back to Dashboard
+                            </button>
+                            <div className="flex items-center">
+                                <Icon icon="lucide:telescope" className="w-8 h-8 text-primary mr-3" />
+                                <div>
+                                    <h1 className="text-2xl font-bold">ExoDiscover AI</h1>
+                                    <p className="text-sm text-base-content/60">Interactive Exoplanet Predictor</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button
+                            onClick={() => setShowPredictor(false)}
+                            className="btn btn-circle btn-ghost btn-sm"
+                        >
+                            <Icon icon="lucide:x" className="w-5 h-5" />
+                        </button>
+                    </div>
+
+                    <ExoplanetPredictor />
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div data-theme="night" className="bg-base-100 min-h-screen">
             <div className="container mx-auto p-4 sm:p-6 md:p-8">
@@ -26,7 +106,26 @@ const Dashboard = () => {
                                 to identify genuine exoplanets from NASA's candidate observations, helping astronomers
                                 prioritize telescope time for the most promising discoveries.
                             </p>
-                            <div className="flex flex-wrap justify-center gap-4 text-sm">
+
+                            {/* Action Buttons */}
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                                <button
+                                    onClick={handleExperienceAI}
+                                    className="btn btn-primary btn-lg px-8"
+                                >
+                                    <Icon icon="lucide:sparkles" className="w-5 h-5 mr-2" />
+                                    Experience Our AI
+                                </button>
+                                <button
+                                    onClick={handleExploreWork}
+                                    className="btn btn-outline btn-lg px-8"
+                                >
+                                    <Icon icon="lucide:search" className="w-5 h-5 mr-2" />
+                                    Explore Our Work
+                                </button>
+                            </div>
+
+                            <div className="flex flex-wrap justify-center gap-4 text-sm mt-8">
                                 <div className="badge badge-primary badge-lg">TabNet Architecture</div>
                                 <div className="badge badge-secondary badge-lg">8,031 Candidates Analyzed</div>
                                 <div className="badge badge-accent badge-lg">Real-time Prediction</div>
@@ -36,100 +135,20 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                {/* Project Overview */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-                    <div className="card bg-base-200 shadow-xl">
-                        <div className="card-body text-center">
-                            <div className="flex justify-center mb-4">
-                                <Icon icon="lucide:brain" className="w-12 h-12 text-primary" />
-                            </div>
-                            <h3 className="card-title justify-center mb-4">AI Classification</h3>
-                            <p className="text-sm text-base-content/70">
-                                Our trained TabNet model analyzes 15+ stellar parameters to distinguish
-                                between confirmed exoplanets and false positive detections with high accuracy.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="card bg-base-200 shadow-xl">
-                        <div className="card-body text-center">
-                            <div className="flex justify-center mb-4">
-                                <Icon icon="lucide:bar-chart-3" className="w-12 h-12 text-secondary" />
-                            </div>
-                            <h3 className="card-title justify-center mb-4">Feature Analysis</h3>
-                            <p className="text-sm text-base-content/70">
-                                Understand which stellar characteristics most influence exoplanet detection,
-                                providing insights into the physics of planetary formation and detection.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="card bg-base-200 shadow-xl">
-                        <div className="card-body text-center">
-                            <div className="flex justify-center mb-4">
-                                <Icon icon="lucide:target" className="w-12 h-12 text-accent" />
-                            </div>
-                            <h3 className="card-title justify-center mb-4">Priority Ranking</h3>
-                            <p className="text-sm text-base-content/70">
-                                Process NASA's uncertain candidates to rank them by confirmation probability,
-                                optimizing telescope observation time for maximum scientific return.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Workflow Section */}
-                <div className="card bg-base-200 shadow-xl mb-12">
-                    <div className="card-body">
-                        <h2 className="card-title text-3xl mb-8 text-center">
-                            <Icon icon="lucide:workflow" className="w-8 h-8 mr-2" />
-                            Discovery Workflow
+                {/* Our Research Findings */}
+                <div className="text-center mb-16">
+                    <div className="flex items-center justify-center mb-6">
+                        <Icon icon="lucide:book-open" className="w-12 h-12 text-primary mr-4" />
+                        <h2 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                            Our Research Findings
                         </h2>
-
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 steps steps-vertical">
-                            <div className="text-center">
-                               
-                                    <li className="step step-primary">
-                                        <div className="text-center">
-                                            <Icon icon="lucide:database" className="w-8 h-8 mx-auto mb-2" />
-                                            <h4 className="font-semibold">Data Input</h4>
-                                            <p className="text-sm text-base-content/70 mt-2">
-                                                Enter stellar parameters or adjust sliders to simulate different star systems
-                                            </p>
-                                        </div>
-                                    </li>
-                               
-                            </div>
-
-                            <div className="text-center">
-                                
-                                    <li className="step step-primary">
-                                        <div className="text-center">
-                                            <Icon icon="lucide:cpu" className="w-8 h-8 mx-auto mb-2" />
-                                            <h4 className="font-semibold">AI Analysis</h4>
-                                            <p className="text-sm text-base-content/70 mt-2">
-                                                TabNet model processes features and predicts exoplanet probability with confidence scores
-                                            </p>
-                                        </div>
-                                    </li>
-                              
-                            </div>
-
-                            <div className="text-center">
-                            
-                                    <li className="step step-primary">
-                                        <div className="text-center">
-                                            <Icon icon="lucide:check-circle" className="w-8 h-8 mx-auto mb-2" />
-                                            <h4 className="font-semibold">Results</h4>
-                                            <p className="text-sm text-base-content/70 mt-2">
-                                                Get instant predictions and explore ranked candidates for telescope observation
-                                            </p>
-                                        </div>
-                                    </li>
-                           
-                            </div>
-                        </div>
+                        <Icon icon="lucide:book-open" className="w-12 h-12 text-primary ml-4" />
                     </div>
+                    <p className="text-xl text-base-content/70 max-w-3xl mx-auto leading-relaxed">
+                        Comprehensive analysis of NASA's exoplanet candidates using advanced AI techniques.
+                        Explore our model's insights, feature importance analysis, and prioritized candidate rankings
+                        that help astronomers make breakthrough discoveries.
+                    </p>
                 </div>
 
                 {/* Main Application Sections */}
