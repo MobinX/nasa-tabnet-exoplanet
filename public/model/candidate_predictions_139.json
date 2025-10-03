@@ -374,7 +374,7 @@
         "prob_false_positive": 0.208377853
     },
     {
-        "planet_name": null,
+        "planet_name": "K03460.01",
         "disposition": "CANDIDATE",
         "orbital_period": 62.596544,
         "planet_radius": 2.25,
@@ -544,7 +544,7 @@
         "prob_false_positive": 0.2073583454
     },
     {
-        "planet_name": null,
+        "planet_name": "K02124.01",
         "disposition": "CANDIDATE",
         "orbital_period": 42.3375799,
         "planet_radius": 1.45,

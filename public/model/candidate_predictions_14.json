@@ -68,7 +68,7 @@
         "prob_false_positive": 0.8239851594
     },
     {
-        "planet_name": null,
+        "planet_name": "K04030.02",
         "disposition": "CANDIDATE",
         "orbital_period": 163.51489847,
         "planet_radius": null,
@@ -85,7 +85,7 @@
         "prob_false_positive": 0.8234909773
     },
     {
-        "planet_name": null,
+        "planet_name": "K05851.01",
         "disposition": "CANDIDATE",
         "orbital_period": 322.221973,
         "planet_radius": 2.18,
@@ -102,7 +102,7 @@
         "prob_false_positive": 0.8233476281
     },
     {
-        "planet_name": null,
+        "planet_name": "K08246.01",
         "disposition": "CANDIDATE",
         "orbital_period": 425.64971,
         "planet_radius": 1.58,
@@ -153,7 +153,7 @@
         "prob_false_positive": 0.8228624463
     },
     {
-        "planet_name": null,
+        "planet_name": "K08277.01",
         "disposition": "CANDIDATE",
         "orbital_period": 0.757261281,
         "planet_radius": 0.58,
@@ -187,7 +187,7 @@
         "prob_false_positive": 0.8223245144
     },
     {
-        "planet_name": null,
+        "planet_name": "K07520.01",
         "disposition": "CANDIDATE",
         "orbital_period": 3.14735789,
         "planet_radius": 3.45,
@@ -221,7 +221,7 @@
         "prob_false_positive": 0.822032392
     },
     {
-        "planet_name": null,
+        "planet_name": "K06918.01",
         "disposition": "CANDIDATE",
         "orbital_period": 0.902403563,
         "planet_radius": 6.17,
@@ -306,7 +306,7 @@
         "prob_false_positive": 0.8212023973
     },
     {
-        "planet_name": null,
+        "planet_name": "K02828.02",
         "disposition": "CANDIDATE",
         "orbital_period": 505.462916,
         "planet_radius": 3.46,
@@ -340,7 +340,7 @@
         "prob_false_positive": 0.8206788898
     },
     {
-        "planet_name": null,
+        "planet_name": "K05379.01",
         "disposition": "CANDIDATE",
         "orbital_period": 520.655224,
         "planet_radius": 7.58,
@@ -374,7 +374,7 @@
         "prob_false_positive": 0.8205070496
     },
     {
-        "planet_name": null,
+        "planet_name": "K08263.01",
         "disposition": "CANDIDATE",
         "orbital_period": 280.55544,
         "planet_radius": 2.17,
@@ -391,7 +391,7 @@
         "prob_false_positive": 0.8204774857
     },
     {
-        "planet_name": null,
+        "planet_name": "K07636.01",
         "disposition": "CANDIDATE",
         "orbital_period": 0.702739679,
         "planet_radius": 0.73,
@@ -408,7 +408,7 @@
         "prob_false_positive": 0.8202976584
     },
     {
-        "planet_name": null,
+        "planet_name": "K03486.01",
         "disposition": "CANDIDATE",
         "orbital_period": 19.0689513,
         "planet_radius": 1.63,
@@ -425,7 +425,7 @@
         "prob_false_positive": 0.820168972
     },
     {
-        "planet_name": null,
+        "planet_name": "K08205.01",
         "disposition": "CANDIDATE",
         "orbital_period": 260.446151,
         "planet_radius": 25.39,
@@ -442,7 +442,7 @@
         "prob_false_positive": 0.8201448321
     },
     {
-        "planet_name": null,
+        "planet_name": "K02068.01",
         "disposition": "CANDIDATE",
         "orbital_period": 41.88970036,
         "planet_radius": 32.16,
@@ -544,7 +544,7 @@
         "prob_false_positive": 0.8197834492
     },
     {
-        "planet_name": null,
+        "planet_name": "K05886.01",
         "disposition": "CANDIDATE",
         "orbital_period": 284.87177,
         "planet_radius": 1.84,
@@ -561,7 +561,7 @@
         "prob_false_positive": 0.8192216158
     },
     {
-        "planet_name": null,
+        "planet_name": "K04426.01",
         "disposition": "CANDIDATE",
         "orbital_period": 369.13236,
         "planet_radius": 2.14,
@@ -629,7 +629,7 @@
         "prob_false_positive": 0.8183424473
     },
     {
-        "planet_name": null,
+        "planet_name": "K07489.01",
         "disposition": "CANDIDATE",
         "orbital_period": 0.565713361,
         "planet_radius": 0.81,
@@ -833,7 +833,7 @@
         "prob_false_positive": 0.8166982532
     },
     {
-        "planet_name": null,
+        "planet_name": "K05083.01",
         "disposition": "CANDIDATE",
         "orbital_period": 69.932459,
         "planet_radius": 8.25,

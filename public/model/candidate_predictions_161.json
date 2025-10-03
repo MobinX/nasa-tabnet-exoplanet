@@ -491,6 +491,39 @@
         "dec": -12.84253,
         "prob_confirmed": 0.9716998339,
         "prob_false_positive": 0.0283001307
+    },
+    {
+        "planet_name": "K01174.01",
+        "disposition": "CANDIDATE",
+        "orbital_period": 129995.7784,
+        "planet_radius": 2.99,
+        "equilibrium_temp": 25,
+        "insolation_flux": 0,
+        "transit_depth": 1474.9,
+        "transit_duration": 9.408,
+        "stellar_teff": 4500,
+        "stellar_logg": 4.572,
+        "stellar_radius": 0.726,
+        "ra": 296.82162,
+        "dec": 47.354031,
+        "prob_confirmed": 1,
+        "prob_false_positive": 0
+    },
+    {
+        "planet_name": "EPIC 203914123.01",
+        "disposition": "CANDIDATE",
+        "orbital_period": 83830,
+        "planet_radius": 12,
+        "equilibrium_temp": null,
+        "insolation_flux": null,
+        "transit_depth": null,
+        "transit_duration": null,
+        "stellar_teff": 4000,
+        "stellar_logg": null,
+        "stellar_radius": 0.74,
+        "ra": 244.3807553,
+        "dec": -24.437006,
+        "prob_confirmed": 1,
+        "prob_false_positive": 1.921090086e-23
     }
-
 ]

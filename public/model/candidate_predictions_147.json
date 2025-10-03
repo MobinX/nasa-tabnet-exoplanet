@@ -782,7 +782,7 @@
         "prob_false_positive": 0.1706830561
     },
     {
-        "planet_name": null,
+        "planet_name": "K05874.01",
         "disposition": "CANDIDATE",
         "orbital_period": 287.33114,
         "planet_radius": 2.07,
