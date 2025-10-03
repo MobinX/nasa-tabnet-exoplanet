@@ -29,25 +29,29 @@ const ExoplanetTable = () => {
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState<ExoplanetData[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showSearchResults, setShowSearchResults] = useState(false);
 
-  // Format column headers from camelCase to human readable
+  // Format column headers using proper astronomical nomenclature
   const formatHeader = (key: string): string => {
     const headers: { [key: string]: string } = {
-      planet_name: 'Planet Name',
+      planet_name: 'Planet Identity',
       disposition: 'Disposition',
-      orbital_period: 'Orbital Period (days)',
-      planet_radius: 'Planet Radius (Earth radii)',
-      equilibrium_temp: 'Equilibrium Temperature (K)',
-      insolation_flux: 'Insolation Flux (Earth units)',
-      transit_depth: 'Transit Depth (ppm)',
-      transit_duration: 'Transit Duration (hours)',
-      stellar_teff: 'Stellar Effective Temperature (K)',
-      stellar_logg: 'Stellar Surface Gravity (log g)',
-      stellar_radius: 'Stellar Radius (Solar radii)',
-      ra: 'Right Ascension (degrees)',
-      dec: 'Declination (degrees)',
-      prob_confirmed: 'Probability Confirmed',
-      prob_false_positive: 'Probability False Positive'
+      orbital_period: 'Orbital Period [days]',
+      planet_radius: 'Planet Radius [R_Earth]',
+      equilibrium_temp: 'Planet Eq Temp [K]',
+      insolation_flux: 'Insolation [Earth flux]',
+      transit_depth: 'Transit Depth [ppm]',
+      transit_duration: 'Transit Duration [hrs]',
+      stellar_teff: 'Stellar Teff [K]',
+      stellar_logg: 'Stellar log(g)',
+      stellar_radius: 'Stellar Radius [R_Sun]',
+      ra: 'RA [deg]',
+      dec: 'Dec [deg]',
+      prob_confirmed: 'Confirmed Prob',
+      prob_false_positive: 'False Positive Prob'
     };
     return headers[key] || key;
   };
@@ -55,6 +59,10 @@ const ExoplanetTable = () => {
   // Format cell values for display
   const formatCellValue = (value: any, key: string): string => {
     if (value === null || value === undefined) return 'N/A';
+
+    if (key === 'planet_name' && typeof value === 'number') {
+      return 'TOI-' + value.toFixed(2);
+    }
 
     if (typeof value === 'number') {
       if (key.includes('prob')) {
@@ -81,8 +89,120 @@ const ExoplanetTable = () => {
     return String(value);
   };
 
-  // Load data for current page
+  // Fuzzy search function
+  const fuzzyMatch = (text: string, pattern: string): boolean => {
+    if (!pattern) return true;
+
+    const patternLower = pattern.toLowerCase();
+    const textLower = text.toLowerCase();
+
+    // Exact match gets highest priority
+    if (textLower === patternLower) return true;
+
+    // Starts with match
+    if (textLower.startsWith(patternLower)) return true;
+
+    // Contains match
+    if (textLower.includes(patternLower)) return true;
+
+    // Fuzzy matching using Levenshtein distance-like approach
+    let patternIdx = 0;
+    for (let textIdx = 0; textIdx < textLower.length && patternIdx < patternLower.length; textIdx++) {
+      if (textLower[textIdx] === patternLower[patternIdx]) {
+        patternIdx++;
+      }
+    }
+
+    return patternIdx === patternLower.length;
+  };
+
+  // Search across all files
+  const searchAcrossFiles = async (searchQuery: string) => {
+    if (!searchQuery.trim()) {
+      setShowSearchResults(false);
+      setSearchResults([]);
+      return;
+    }
+
+    setIsSearching(true);
+    setError(null);
+
+    try {
+      const results: ExoplanetData[] = [];
+
+      // Search through all 161 files
+      for (let i = 1; i <= 161; i++) {
+        try {
+          const response = await fetch(`/model/candidate_predictions_${i}.json`);
+          if (response.ok) {
+            const data: ExoplanetData[] = await response.json();
+
+            // Filter data based on fuzzy search with TOI conversion
+            const filteredData = data.filter(planet => {
+              if (!planet.planet_name) return false;
+
+              // Convert numeric planet names to TOI format for searching
+              let searchName = String(planet.planet_name);
+              if (typeof planet.planet_name === 'number') {
+                searchName = 'TOI-' + planet.planet_name.toFixed(2);
+              }
+
+              return fuzzyMatch(searchName, searchQuery);
+            });
+
+            results.push(...filteredData);
+          }
+        } catch (err) {
+          // Continue searching other files even if one fails
+          console.warn(`Failed to search file ${i}:`, err);
+        }
+      }
+
+      // Sort results by relevance (exact matches first, then starts with, then contains)
+      results.sort((a, b) => {
+        const nameA = String(a.planet_name).toLowerCase();
+        const nameB = String(b.planet_name).toLowerCase();
+        const query = searchQuery.toLowerCase();
+
+        // Exact match
+        if (nameA === query && nameB !== query) return -1;
+        if (nameB === query && nameA !== query) return 1;
+
+        // Starts with
+        if (nameA.startsWith(query) && !nameB.startsWith(query)) return -1;
+        if (nameB.startsWith(query) && !nameA.startsWith(query)) return 1;
+
+        // Contains (shorter matches first for better relevance)
+        const aIndex = nameA.indexOf(query);
+        const bIndex = nameB.indexOf(query);
+        if (aIndex !== bIndex) return aIndex - bIndex;
+
+        return nameA.length - nameB.length;
+      });
+
+      setSearchResults(results);
+      setShowSearchResults(true);
+    } catch (err: any) {
+      setError(err.message);
+      setSearchResults([]);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  // Debounced search effect
   useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      searchAcrossFiles(searchTerm);
+    }, 300); // 300ms debounce
+
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm]);
+
+  // Load data for current page (when not searching)
+  useEffect(() => {
+    if (showSearchResults) return; // Don't load page data when showing search results
+
     const loadData = async () => {
       setLoading(true);
       setError(null);
@@ -117,7 +237,7 @@ const ExoplanetTable = () => {
     };
 
     loadData();
-  }, [currentPage, sortField, sortDirection]);
+  }, [currentPage, sortField, sortDirection, showSearchResults]);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -161,7 +281,48 @@ const ExoplanetTable = () => {
           <div className="card-title p-6 pb-0">
             <h2 className="text-xl font-bold">Exoplanet Candidates</h2>
             <div className="text-sm text-base-content/70">
-              Page {currentPage} of {totalPages}
+              {showSearchResults ? (
+                isSearching ? (
+                  <span className="flex items-center gap-2">
+                    <span className="loading loading-spinner loading-sm"></span>
+                    Searching...
+                  </span>
+                ) : (
+                  `Found ${searchResults.length} results`
+                )
+              ) : (
+                `Page ${currentPage} of ${totalPages}`
+              )}
+            </div>
+          </div>
+
+          {/* Search Bar */}
+          <div className="px-6 pt-0 pb-4">
+            <div className="form-control">
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Icon icon="lucide:search" className="w-5 h-5 text-base-content/40" />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search planet names across all files..."
+                  className="input input-bordered w-full pl-10 pr-10 py-3 text-base"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                {searchTerm && (
+                  <button
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    onClick={() => {
+                      setSearchTerm('');
+                      setShowSearchResults(false);
+                      setSearchResults([]);
+                    }}
+                  >
+                    <Icon icon="lucide:x" className="w-5 h-5 text-base-content/40 hover:text-base-content transition-colors" />
+                  </button>
+                )}
+              </div>
             </div>
           </div>
 
@@ -199,8 +360,8 @@ const ExoplanetTable = () => {
                 </tr>
               </thead>
               <tbody>
-                {currentData.map((planet, index) => (
-                  <tr key={index} className="hover">
+                {(showSearchResults ? searchResults : currentData).map((planet, index) => (
+                  <tr key={`${planet.planet_name}-${index}`} className="hover">
                     <td className="font-semibold">
                       {formatCellValue(planet.prob_confirmed, 'prob_confirmed')}
                     </td>
