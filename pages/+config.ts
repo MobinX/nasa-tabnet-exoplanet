@@ -10,9 +10,9 @@ export default {
   Layout,
 
   // https://vike.dev/head-tags
-  title: "My Vike App",
+  title: "Exoplanet Model Interference WebUI",
 
-  description: "Demo showcasing Vike",
+  description: "Web Interference for accesing exoplanet tabnet model",
   extends: vikeReact,
   prerender: true,
 } satisfies Config;
