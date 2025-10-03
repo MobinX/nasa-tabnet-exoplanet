@@ -11,10 +11,12 @@ interface FeatureRanges {
 const ExoplanetPredictor = () => {
   const [session, setSession] = useState<ort.InferenceSession | null>(null);
   const [prediction, setPrediction] = useState<string | null>(null);
+  const [predictionScore, setPredictionScore] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [featureRanges, setFeatureRanges] = useState<FeatureRanges | null>(null);
   const [inputValues, setInputValues] = useState<{ [key: string]: number }>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [editingFeature, setEditingFeature] = useState<string | null>(null);
 
   useEffect(() => {
     const loadResources = async () => {
@@ -50,6 +52,17 @@ const ExoplanetPredictor = () => {
     setInputValues(prev => ({ ...prev, [feature]: value }));
   };
 
+  const handleInputUpdate = (feature: string, newValue: string) => {
+    if (!featureRanges) return;
+    const parsedValue = parseFloat(newValue);
+    if (!isNaN(parsedValue)) {
+      const [min, max] = featureRanges[feature].range;
+      const clampedValue = Math.max(min, Math.min(max, parsedValue));
+      handleSliderChange(feature, clampedValue);
+    }
+    setEditingFeature(null);
+  };
+
   const runInference = async () => {
     if (!session || !featureRanges) {
       setError('Model or feature ranges not loaded yet.');
@@ -58,6 +71,7 @@ const ExoplanetPredictor = () => {
 
     setIsLoading(true);
     setPrediction(null);
+    setPredictionScore(null);
     setError(null);
 
     try {
@@ -72,7 +86,7 @@ const ExoplanetPredictor = () => {
       const predictions = outputTensor.data as Float32Array;
 
       const predictedClassIndex = predictions[0] > 50 ? 0 : 1;
-      alert(predictions[0])
+      setPredictionScore(predictions[0]);
       const classNames = ['CONFIRMED', 'FALSE POSITIVE'];
       const predictedClassName = classNames[predictedClassIndex];
 
@@ -117,7 +131,28 @@ const ExoplanetPredictor = () => {
               <div key={feature} className="form-control w-full">
                 <label className="label">
                   <span className="label-text">{feature}</span>
-                  <span className="label-text-alt text-primary font-semibold">{inputValues[feature]?.toFixed(3)}</span>
+                  {editingFeature === feature ? (
+                    <input
+                      type="number"
+                      defaultValue={inputValues[feature]}
+                      onBlur={(e) => handleInputUpdate(feature, e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          (e.target as HTMLInputElement).blur();
+                        }
+                      }}
+                      className="input input-bordered input-primary input-sm w-28 text-right"
+                      autoFocus
+                      onFocus={(e) => e.target.select()}
+                    />
+                  ) : (
+                    <span
+                      className="label-text-alt text-primary font-semibold cursor-pointer"
+                      onClick={() => setEditingFeature(feature)}
+                    >
+                      {inputValues[feature]?.toFixed(3)}
+                    </span>
+                  )}
                 </label>
                 <input
                   type="range"
@@ -126,7 +161,7 @@ const ExoplanetPredictor = () => {
                   value={inputValues[feature]}
                   step={0.001}
                   onChange={(e) => handleSliderChange(feature, parseFloat(e.target.value))}
-                  className="range range-primary range-sm"
+                  className="range range-primary range-sm ml-5"
                 />
               </div>
             ))}
@@ -153,6 +188,9 @@ const ExoplanetPredictor = () => {
                   <div>
                     <h3 className="font-bold">Prediction Result</h3>
                     <div className="text-xs">The model predicts this candidate is a <span className="font-semibold">{prediction}</span> exoplanet.</div>
+                    {predictionScore !== null && (
+                      <div className="text-xs mt-1">Confidence Score: <span className="font-semibold">{prediction == "FALSE POSITIVE" ? (100 - predictionScore) : predictionScore }%</span></div>
+                    )}
                   </div>
                 </div>
               )}
