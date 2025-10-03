@@ -10,9 +10,9 @@ export default {
   Layout,
 
   // https://vike.dev/head-tags
-  title: "Exoplanet Model Interference WebUI",
+  title: "ExoDiscover AI - AI-Powered Exoplanet Discovery",
 
-  description: "Web Interference for accesing exoplanet tabnet model",
+  description: "Revolutionizing exoplanet discovery through artificial intelligence. Advanced TabNet classifier analyzes stellar parameters to identify genuine exoplanets from NASA's candidate observations.",
   extends: vikeReact,
   prerender: true,
 } satisfies Config;
