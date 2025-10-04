@@ -1,4 +1,4 @@
-# 🚀 ExoDiscover AI
+# 🚀 ExoDiscover AI (https://nasa-tabnet-exoplanet.vercel.app/)
 
 **2025 NASA Space Apps Challenge Solution**<br>
 *Challenge: "A World Away: Hunting for Exoplanets with AI"*
