@@ -8,12 +8,14 @@ import ExoplanetTable from './ExoplanetTable';
 const Dashboard = () => {
     const [showMainContent, setShowMainContent] = useState(false);
     const [showPredictor, setShowPredictor] = useState(false);
+    const [lottieLoaded, setLottieLoaded] = useState(false);
+    const [lottieError, setLottieError] = useState(false);
 
     useEffect(() => {
         // Simulate rocket launch animation
         const timer = setTimeout(() => {
             setShowMainContent(true);
-        }, 4000); // 5 seconds for demo, adjust as needed
+        }, 3000); // 5 seconds for demo, adjust as needed
 
         return () => clearTimeout(timer);
     }, []);
@@ -46,7 +48,40 @@ const Dashboard = () => {
                         left: 0,
                         zIndex: 9999
                     }}
+                    onLoad={() => {
+                        console.log('Lottie animation loaded successfully');
+                        setLottieLoaded(true);
+                    }}
+                    onError={(error) => {
+                        console.error('Lottie animation failed to load:', error);
+                        setLottieError(true);
+                    }}
+                    onPlay={() => {
+                        console.log('Lottie animation loaded successfully');
+                        setLottieLoaded(true);
+                    }}
                 />
+
+                {/* Optional: Show loading indicator while Lottie loads */}
+                {!lottieLoaded && !lottieError && (
+                    <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex items-center justify-center bg-transparent z-50">
+                        <div className="text-center text-white">
+                            <div className="loading loading-spinner loading-lg mb-4"></div>
+                            <p>Interstellar travel in progress...</p>
+                        </div>
+                    </div>
+                )}
+
+                {/* Show error message if Lottie fails to load */}
+                {lottieError && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/50 z-50">
+                        <div className="text-center text-white">
+                            <Icon icon="lucide:alert-triangle" className="w-16 h-16 mx-auto mb-4 text-red-500" />
+                            <p className="text-xl mb-2">Animation unavailable</p>
+                            <p className="text-sm opacity-75">Proceeding to main interface...</p>
+                        </div>
+                    </div>
+                )}
             </div>
         );
     }
@@ -119,13 +154,16 @@ const Dashboard = () => {
                                     <Icon icon="lucide:sparkles" className="w-5 h-5 mr-2" />
                                     Experience Our AI
                                 </button>
-                                <button
-                                    onClick={handleExploreWork}
-                                    className="btn btn-outline btn-lg px-8"
+                               
+                                <a
+                                    href="https://github.com/MobinX/nasa-tabnet-exoplanet"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="btn btn-secondary btn-lg px-8"
                                 >
-                                    <Icon icon="lucide:search" className="w-5 h-5 mr-2" />
-                                    Explore Our Work
-                                </button>
+                                    <Icon icon="lucide:github" className="w-5 h-5 mr-2" />
+                                    View on GitHub
+                                </a>
                             </div>
 
                             <div className="flex flex-wrap justify-center gap-4 text-sm mt-8">
