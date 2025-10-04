@@ -91,17 +91,31 @@ const ExoplanetPredictor = () => {
       const predictions = outputTensor.data as Float32Array;
       console.log(predictions)
 
-      // Apply softmax to convert logits to probabilities
-      const expLogits = predictions.map(logit => Math.exp(logit));
+      // Apply numerically stable softmax to convert logits to probabilities
+      const logits = Array.from(predictions);
+      let softmaxProbs: number[];
+
+      // Numerically stable softmax implementation
+      const maxLogit = Math.max(...logits);
+      const expLogits = logits.map(logit => Math.exp(logit - maxLogit));
       const sumExpLogits = expLogits.reduce((a, b) => a + b, 0);
-      const softmaxProbs = expLogits.map(expLogit => expLogit / sumExpLogits);
-      console.log(softmaxProbs)
+
+      // Handle edge case where sum is 0 or very small
+      if (sumExpLogits === 0 || !isFinite(sumExpLogits)) {
+        console.warn('Invalid softmax sum, using uniform distribution');
+        softmaxProbs = new Array(logits.length).fill(1 / logits.length);
+        console.log('Fallback probabilities:', softmaxProbs);
+      } else {
+        softmaxProbs = expLogits.map(expLogit => expLogit / sumExpLogits);
+        console.log('Calculated probabilities:', softmaxProbs);
+      }
       const maxProb = Math.max(...softmaxProbs);
       const predictedClassIndex = softmaxProbs.indexOf(maxProb);
       const predictionScore = maxProb * 100;
       
       const predictedClassName = classNames[predictedClassIndex];
-
+      console.log(`Predicted class: ${predictedClassName} with confidence ${predictionScore.toFixed(2)}%`);
+      console.log(softmaxProbs)
       setPrediction(predictedClassName);
       setPredictionScore(predictionScore);
       setAllProbabilities(Array.from(softmaxProbs));

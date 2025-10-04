@@ -83,7 +83,7 @@ Our solution follows the complete machine learning pipeline used in astronomical
 
 ## 📋 Project Description
 
-**ExoDiscover AI** is a NASA Space Apps Challenge solution that automates exoplanet candidate classification using advanced AI from transit survey data. We trained a TabNet model on NASA's Kepler, K2, and TESS datasets to distinguish confirmed exoplanets from false positives. The TabNet's built-in feature importance analysis reveals which astronomical variables (orbital period, planet radius, stellar temperature, etc.) are most critical for accurate detection. Our interactive web interface enables real-time AI inference, allowing astronomers to input stellar parameters and receive instant predictions. We deployed this model on 8,031 exoplanet candidates from NASA's archive, finding which candidate planet observation data has high chance of being an exoplanet and ranking them based on that probabilty.
+**ExoDiscover AI** is a NASA Space Apps Challenge solution that automates exoplanet candidate classification from transit survey data using advanced AI. We trained a TabNet model on NASA's Kepler, K2, and TESS datasets to distinguish confirmed exoplanets from false positives. The TabNet's built-in feature importance analysis reveals which astronomical variables (orbital period, planet radius, stellar temperature, etc.) are most critical for accurate detection. Our interactive web interface enables real-time AI inference, allowing astronomers to input stellar parameters and receive instant predictions. We deployed this model on 8,031 exoplanet candidates from NASA's archive, finding which candidate planet observation data has high chance of being an exoplanet and ranking them based on that probabilty.
 
 ---
 
